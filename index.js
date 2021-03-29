@@ -10,8 +10,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
-  //   res.json(book);
-  res.json({ at: "FUck", bo: [1, 2, 3, 4, 5] });
+  res.json(book);
 });
 
 app.post("/book", (req, res) => {
