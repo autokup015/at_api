@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <mate charest="utf-8" />
+    <title>Hello world! at</title>
+    <style>
+      body {
+        height: 100%;
+        width: 1000px;
+        /* to centre page on screen*/
+        margin-left: auto;
+        margin-right: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      style="
+        width: 800px;
+        height: 600px;
+        padding: 20px;
+        text-align: center;
+        border: 10px solid #787878;
+      "
+    >
+      <div
+        style="
+          width: 750px;
+          height: 550px;
+          padding: 20px;
+          text-align: center;
+          border: 5px solid #787878;
+        "
+      >
+        <span style="font-size: 50px; font-weight: bold"
+          >Certificate of Completion</span
+        >
+        <br /><br />
+        <span style="font-size: 25px"><i>This is to certify that</i></span>
+        <br /><br />
+        {{#each users}}
+        <span style="font-size: 30px"><b>{{this.name}}</b></span>
+        <br /><br />
+        <span style="font-size: 25px"><i>has completed the course</i></span>
+        <br /><br />
+
+        <span style="font-size: 30px">{{this.name}}</span> <br /><br />
+
+        <span style="font-size: 20px">with score of <b>{{this.point}}</b></span>
+        <br /><br /><br /><br />
+        <span style="font-size: 25px"><i>dated</i></span
+        ><br />
+        {{this.date}}
+        <span style="font-size: 30px">$dt</span>
+        {{/each}}
+      </div>
+    </div>
+  </body>
+</html>
