@@ -6,8 +6,6 @@ app.use(cors());
 
 const port = process.env.PORT || 3000;
 
-const book = require("./data/book.json");
-
 // axios
 const axios = require("axios");
 
@@ -18,6 +16,14 @@ var fs = require("fs");
 // Read HTML Template
 var html = fs.readFileSync("template.html", "utf8");
 
+// SMS Vonage
+const Vonage = require("@vonage/server-sdk");
+
+const vonage = new Vonage({
+  apiKey: "e972def6",
+  apiSecret: "TXya3s97Q0iKsx1V",
+});
+
 app.use(
   bodyParser.urlencoded({
     extended: false,
@@ -25,14 +31,17 @@ app.use(
 );
 app.use(bodyParser.json());
 
+// Default For check API
+
 app.get("/", (req, res) => {
   res.send("Hello api from AT");
 });
-// ====
-app.post("/login", (req, res) => {
+
+// Login for get Certificate by sheet online
+
+app.post("/api/login", (req, res) => {
   let username = req.body.username;
   let password = req.body.password;
-  console.log(req.body);
   axios
     .get(
       "https://script.google.com/macros/s/AKfycbwp6gBjY1GFab1l9y9hQFCW3p7wqdCmzpbJlmChUEdP9APVDA/exec?path=/cer"
@@ -49,10 +58,18 @@ app.post("/login", (req, res) => {
     });
 });
 
-app.post("/book", (req, res) => {
-  book.push({ id: req.body.id++, name: req.body.name });
-  res.json(req.body);
+// SMS Vonage
+
+app.post("/api/sms", (req, res) => {
+  const from = "IN2IT Company";
+  let number = req.body.to.substring(1);
+  const to = "66" + number;
+  const text = req.body.text;
+
+  vonage.message.sendSms(from, to, text);
 });
+
+// Generate PDF certificate
 
 app.get("/api/pdf", (req, res) => {
   let nameS = "auto chonlatee";
@@ -82,4 +99,7 @@ app.get("/api/pdf", (req, res) => {
 
 app.listen(port, () => {
   console.log("Port start at port : ", port);
+  console.log(
+    "================================================================"
+  );
 });
