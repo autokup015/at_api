@@ -24,6 +24,10 @@ const vonage = new Vonage({
   apiSecret: "TXya3s97Q0iKsx1V",
 });
 
+// Mandrill api
+const mandrill = require("mandrill-api/mandrill");
+const mandrill_client = new mandrill.Mandrill("qMwNZlQXlDXanRfL1MmXZQ");
+
 app.use(
   bodyParser.urlencoded({
     extended: false,
@@ -95,6 +99,48 @@ app.get("/api/pdf", (req, res) => {
     .catch((error) => {
       console.error(error);
     });
+});
+
+// Send email by mandrill and mailchilm
+
+app.post("/api/email", (req, res) => {
+  let templateName = req.body.templatename;
+  let subject = req.body.subject;
+  let fromemail = req.body.fromemail;
+  let fromname = req.body.fromname;
+  let toemail = req.body.toemail;
+
+  var template_name = templateName;
+  var template_content = [
+    {
+      name: templateName,
+      content: "example content",
+    },
+  ];
+  var message = {
+    html: "<p>Example HTML content</p>",
+    text: "Example text content",
+    subject: subject,
+    from_email: fromemail,
+    from_name: fromname,
+    to: [
+      {
+        email: toemail,
+        name: "Recipient Name",
+        type: "to",
+      },
+    ],
+  };
+  var async = false;
+
+  mandrill_client.messages.sendTemplate({
+    template_name: template_name,
+    template_content: template_content,
+    message: message,
+    async: async,
+  });
+
+  res.send(":)");
 });
 
 app.listen(port, () => {
